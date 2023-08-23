@@ -60,8 +60,9 @@ namespace GQIDSServiceAlarms_1
 
 			_alarms = Task.Factory.StartNew(() =>
 			{
-				var item = AlarmFilterItem.Create("service name", "equal to", new[] { _service }, null, null);
-				var filter = new AlarmFilter(item);
+				var service = _service.Replace(":", "_");
+				var alarmFilterByProperty = new AlarmFilterItemString(AlarmFilterField.ServiceName, AlarmFilterCompareType.WildcardEquality, new string[] { "*" + service + "*" });
+				var filter = new AlarmFilter(alarmFilterByProperty);
 				var historyAlarmsMessage = new GetAlarmDetailsFromDbMessage
 				{
 					StartTime = _startTime,
